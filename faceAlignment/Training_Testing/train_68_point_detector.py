@@ -45,12 +45,14 @@ logging.debug("-Created the img xml")
 
 # now we create the predictor with the settings and imgs
 dlib.train_shape_predictor(training_xml_path, "trained_landmark_predictor.dat", training_options)
-logging.debug("-Created the trained model")
+logging.debug("-Trained the new predictor")
 
 print("\n Training Accuracy: {}".format(dlib.test_shape_predictor(training_xml_path, "trained_landmark_predictor.dat")))
 
+
 #now we wanna test the trained model with faces diffrent than the ones we used in training
 testing_xml_path = os.path.join(img_folder, "face_landmark_testing.xml")
+logging.debug("-Tested the new predictor")
 
 print("\n Testing Accuracy: {}".format( dlib.test_shape_predictor(testing_xml_path, "trained_landmark_predictor.dat")))
 
