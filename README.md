@@ -15,3 +15,6 @@ python 2.7
         - scipy
         - cmake
 Text editor ( i.e Visual Studio, pycharm )
+CC and CXX compiler, We used MinGW64 as ours
+Imglab tool to create the traing and testing dataset xmls
+HELEN images used as traing and testing photos
