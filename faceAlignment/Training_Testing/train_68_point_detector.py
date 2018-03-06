@@ -1,3 +1,11 @@
+################################################################################
+# - Will take in a training xml and a testing xml and create a landmark 
+#   prediction model that will then be used for face alignment 
+#
+# - We are using the HELEN dataset for training and testing
+#
+################################################################################
+
 import os,sys,logging
 import glob
 import dlib

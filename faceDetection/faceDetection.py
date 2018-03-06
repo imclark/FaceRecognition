@@ -1,3 +1,11 @@
+################################################################################
+# - Example of how the face detection with dlib works and looks
+# 
+#
+#  - TODO: change the arguments handled so a folder of images can be taken in
+#
+################################################################################
+
 import logging, sys
 import dlib
 from skimage import io
