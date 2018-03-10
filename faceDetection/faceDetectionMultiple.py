@@ -26,18 +26,16 @@ path = os.getcwd() + '/' + directory_name
 logging.debug("-Initilizing the face detector")
 face_detector = dlib.get_frontal_face_detector()
 logging.debug("number of files to process: {} ".format(len([name for name in glob.glob(os.path.join(path, '*'))])))
-x = 0
-images = []
+
 #loops through each image
 for filename in glob.glob(os.path.join(path, '*')):
 	logging.debug("Processing file: {}".format(filename))
-	images.append(io.imread(filename))
+	image = io.imread(filename)
 	#checks for color images, if color needs to shift color from BGR, TO RGB
-	if(len(images[x].shape)==3):
-		images[x] = cv2.cvtColor(images[x], cv2.COLOR_BGR2RGB)
+	if(len(image.shape)==3):
+		image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	#detect faces
-	detected_faces = face_detector(images[x], 1)
-	y = 0
+	detected_faces = face_detector(image, 1)
 	#building a path location of images
 	base_dir = os.path.join(os.getcwd(), directory_name , directory_name + "processed")
 	#creates a new directory for processed images
@@ -48,16 +46,17 @@ for filename in glob.glob(os.path.join(path, '*')):
 		logging.debug("Processing face {} ".format(k) + "for file {}".format(filename))
 		logging.debug("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(k, d.left(), d.top(), d.right(), d.bottom()))
 		#drawing the rectangle
-		cv2.rectangle(images[x], (d.left(), d.top()), (d.right(), d.bottom()), (0, 0, 255), 2)
-		y = y + 1
+		cv2.rectangle(image, (d.left(), d.top()), (d.right(), d.bottom()), (0, 0, 255), 2)
+
 	#building path to save file
 	new_image_loc = base_dir + "{}".format(filename)["{}".format(filename).rfind("/"):"{}".format(filename).rfind(".")] + "faceboxed" + "{}".format(filename)["{}".format(filename).rfind("."):]
 	logging.debug(base_dir)
 	#saves new images
 	#NOTE: DOES NOT OVERWRITE
-	cv2.imwrite(new_image_loc , images[x])
+	cv2.imwrite(new_image_loc , image)
+
 		
-	x = x + 1
+
 		
 
 # create an instance of the HOG face deterctor
