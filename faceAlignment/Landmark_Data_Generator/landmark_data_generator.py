@@ -62,8 +62,8 @@ for f in glob.glob(os.path.join(images_path, "*.jpg")):
         
         
         #print("{} images left").format(num_img)
-        sys.stdout.write("\rProcessing image %i of 500 images" % num_img)
-        num_img += 1
+    sys.stdout.write("\rProcessing image %i of 500 images" % num_img)
+    num_img += 1
 
 
 mydata = tostring(dataset)
