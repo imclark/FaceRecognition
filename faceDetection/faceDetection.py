@@ -41,6 +41,7 @@ win.set_title("HOG Face Detector")
 # loop through the detected_faces and get an face_rect instance for each face regognized in the picture and place a border around the face
 logging.debug("-Overlaying borders onto the faces in the image")
 for i, face_rect in enumerate(detected_faces):
+	print("- Face #{} found at Left: {} Top: {} width: {} height: {}".format(i, face_rect.left(), face_rect.top(), face_rect.width(), face_rect.height()))
 	win.add_overlay(face_rect)
 
 print("\n -Found {} face(s) in the image {} \n".format(len(detected_faces), file_name))
