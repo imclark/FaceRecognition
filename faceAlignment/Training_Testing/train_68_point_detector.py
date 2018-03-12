@@ -30,17 +30,27 @@ logging.debug("-Loaded in NN training options")
 # here we set the traing oversampling size to 300 since we ahve a small sample size
 # this may help!? (may also try 100 to see the diffrence in training results)
 
-training_options.oversampling_amount = 300
-logging.debug("-Set oversampling to 300")
+training_options.oversampling_amount = 20
+logging.debug("-Set oversampling to 100")
 
 # setting the regulization perameter to a small number since the sample size is small
 # hopefully this doesn't result in underfitting (will chanfe the value to see output)
-training_options.nu = 0.05
-logging.debug("-Set nu to 0.05")
+training_options.nu = 0.1
+logging.debug("-Set nu to 0.1")
 
 #set the tree depth to 2
-training_options.tree_depth = 2
-logging.debug("-Set tree depth to 2")
+training_options.tree_depth = 5
+logging.debug("-Set tree depth to 5")
+
+training_options.num_trees_per_cascade_level = 10
+
+training_options.lambda_param = 0.1
+
+training_options.cascade_depth = 10;
+
+training_options.num_test_splits = 20;
+
+training_options.feature_pool_size = 400;
 
 #setting the be_verbose setting to true so the training data will be printed out
 training_options.be_verbose = True
@@ -48,7 +58,7 @@ logging.debug("-Such Verbose, Much Information, WOW!")
 
 # the training will take in an xml file with the imgs used for the training dataset
 # so we need to create that xml with the imgs in the given folder
-training_xml_path = os.path.join(img_folder, "face_landmarks_training.xml")
+training_xml_path = os.path.join(img_folder, "training.xml")
 logging.debug("-Created the img xml")
 
 # now we create the predictor with the settings and imgs
@@ -59,7 +69,7 @@ print("\n Training Accuracy: {}".format(dlib.test_shape_predictor(training_xml_p
 
 
 #now we wanna test the trained model with faces diffrent than the ones we used in training
-testing_xml_path = os.path.join(img_folder, "face_landmark_testing.xml")
+testing_xml_path = os.path.join(img_folder, "testing.xml")
 logging.debug("-Tested the new predictor")
 
 print("\n Testing Accuracy: {}".format( dlib.test_shape_predictor(testing_xml_path, "trained_landmark_predictor.dat")))
