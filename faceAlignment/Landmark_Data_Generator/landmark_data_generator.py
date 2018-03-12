@@ -11,11 +11,12 @@
 #
 ################################################################################
 
-import sys, os, dlib, glob
+import sys, os, dlib, glob, gc
 import logging
 from skimage import io
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
+gc.enable()
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -60,7 +61,7 @@ for f in glob.glob(os.path.join(images_path, "*.jpg")):
         for n in range(68):
             part = SubElement(box, 'part', name= str(n), x= str(shape.part(n).x), y= str(shape.part(n).y))
         
-    sys.stdout.write("\rProcessing image %i of 500 images" % num_img)
+    sys.stdout.write("\rProcessing image %i" % num_img)
     num_img += 1
 
 
