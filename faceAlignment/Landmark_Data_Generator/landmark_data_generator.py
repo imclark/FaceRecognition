@@ -60,8 +60,6 @@ for f in glob.glob(os.path.join(images_path, "*.jpg")):
         for n in range(68):
             part = SubElement(box, 'part', name= str(n), x= str(shape.part(n).x), y= str(shape.part(n).y))
         
-        
-        #print("{} images left").format(num_img)
     sys.stdout.write("\rProcessing image %i of 500 images" % num_img)
     num_img += 1
 
