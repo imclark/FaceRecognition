@@ -1,3 +1,19 @@
+################################################################################
+# - Takes in a the image directory in the command prompt. Then asked to provide
+#   predictor model. It'll create the face detector, land mark predictor
+#   and face aligner. Then uses the face detector, landmark predictor and 
+#   the face aligner to generate the representations to be passed into the
+#   face recognition part of the project
+#
+#   
+#
+# 
+# 
+# 
+#
+################################################################################
+
+
 import sys
 from skimage import io
 import os
@@ -21,7 +37,7 @@ facePose = dlib.shape_predictor(predictor)
 faceAlign = openface.AlignDlib(predictor)
 
 # initialize the display window
-win = dlib.image_window()
+#win = dlib.image_window()
 
 # for each image in the folder
 for f in glob.glob(os.path.join(filePath, "*.jpg")):
@@ -50,14 +66,14 @@ for f in glob.glob(os.path.join(filePath, "*.jpg")):
         # then using the landmarks align the face
         alignedFace = faceAlign.align(534, image, faceRect, landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
 
-        # conver the image back to original color
-        alignedFace = cv2.cvtColor(alignedFace, cv2.COLOR_RGB2BGR)
+        # conver the image back to original color so it can be displayed in the win
+        #alignedFace = cv2.cvtColor(alignedFace, cv2.COLOR_RGB2BGR)
         
         # better to allow the images to display when there is only a few 
         # images to display, ideally only one image
-        win.set_image(alignedFace)
+        #win.set_image(alignedFace)
 
         # this code would save the newly aligned image
-        #cv2.imwrite("align_face_{}.jpg".format(i), alignedFace)
+        cv2.imwrite("align_face_{}.jpg".format(i), alignedFace)
 
 dlib.hit_enter_to_continue()
