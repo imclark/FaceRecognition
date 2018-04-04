@@ -28,22 +28,22 @@ training_options = dlib.shape_predictor_training_options()
 logging.debug("-Loaded in NN training options")
 
 # set the taining options, to know what each option does read the dlib documentation
-training_options.oversampling_amount = 50
+training_options.oversampling_amount = 20
 
-training_options.nu = 0.05
+training_options.nu = 0.15
 
 #set the tree depth to 2
-training_options.tree_depth = 2
+training_options.tree_depth = 5
 
-training_options.num_trees_per_cascade_level = 2
+training_options.num_trees_per_cascade_level = 700
 
-training_options.lambda_param = 0.2
+training_options.lambda_param = 0.1
 
-training_options.cascade_depth = 2
+training_options.cascade_depth = 10
 
-training_options.num_test_splits = 2
+training_options.num_test_splits = 20
 
-training_options.feature_pool_size = 400
+training_options.feature_pool_size = 300
 
 training_options.feature_pool_region_padding = 0
 
