@@ -2,6 +2,12 @@
 # - Used to take in a pretrained model and the images to be used to help train
 #   the new model.
 #
+# - iBug dataset used for training and testing 
+#        http://dlib.net/files/data/ibug_300W_large_face_landmark_dataset.tar.gz
+#
+# - Pretrained shape predictor used to create the 68 point values
+#       https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2
+#
 # - Creates an xml file that can be used to train or test a landmark detection 
 #   model
 #
