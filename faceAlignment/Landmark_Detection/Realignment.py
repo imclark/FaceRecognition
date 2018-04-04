@@ -11,7 +11,7 @@ if len(sys.argv) != 1:
     exit()
 
 # load in lanmark predictor dat
-predictor = "landmark_predictor.dat"
+predictor = raw_input("----------- Predictor model name (including .dat): ")
 
 filePath = sys.argv[1]
 
