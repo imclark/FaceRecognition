@@ -16,7 +16,9 @@ img_folder = sys.argv[1]
 
 predictorPath = sys.argv[2]
 
-testing_xml_path = os.path.join(img_folder, "testing.xml")
+xml_name = raw_input("-----------xml file name (including .xml): ")
+
+testing_xml_path = os.path.join(img_folder, xml_name)
 
 print("\n Testing Accuracy: {}".format( dlib.test_shape_predictor(testing_xml_path, predictorPath)))
 
