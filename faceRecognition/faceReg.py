@@ -16,7 +16,7 @@ face_folder = raw_input("----------- Face folder name: ")
 # initilize the predictors
 detector = dlib.get_frontal_face_detector()
 sp = dlib.shape_predictor(landmark_pridictor)
-faceRec = dlib.compute_face_descriptor(face_recognition)
+faceRec = dlib.face_recognition_model_v1(face_recognition)
 
 # intitilize the gui window
 win = dlib.image_window()
@@ -62,7 +62,7 @@ for f in glob.glob(os.path.join(face_folder, "*.jpeg")):
             # you could also run without the 10 at the end to produce a faster process
             # with the 10 the process runs x10 times slower though it raises the accuracy a bit
             face_descripter = faceRec.compute_face_descriptor(img, shape, 10)
-            print(face_descriptor)
+            print(face_descripter)
 
             dlib.hit_enter_to_continue()
 
