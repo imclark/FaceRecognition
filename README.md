@@ -32,4 +32,19 @@ python 2.7 64bit version
 
 -Pre-Trained 68 point landmark predictor used to create the landmark values for the xml generator (https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2)
 
+-Pretrained 128 point predictor model used for getting face measurements
+(https://github.com/davisking/dlib-models/raw/master/dlib_face_recognition_resnet_model_v1.dat.bz2)
 
+Created out own training img set for the face recognition part, structure should look like this:
+    -training_images
+    |__ Ian Clark
+    |  |__ian_clark_1.jpeg
+    |  |__ian_clark_2.jpeg
+    |
+    |__ Gary_Busey
+    |  |__gary_busey_1.jpeg
+    |  |__gary_busey_2.jpeg
+
+and so on
+
+Should have around 20 images in each subfolder with only the face you want to be known visable.
