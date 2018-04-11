@@ -1,12 +1,6 @@
 import sys, os, dlib, glob
 from skimage import io 
 
-if len(sys.argv) != 1:
-    print(
-        "Call the program like this: \n"
-        " python [0]faceReg.py [1]lanmark_predictor.dat\n"
-    )
-    exit()
 
 # input the paths to the models and img folders
 landmark_pridictor = raw_input("----------- Predictor model name (including .dat): ")
