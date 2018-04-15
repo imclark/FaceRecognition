@@ -84,3 +84,28 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
             pickle.dump(knn_classifier, f)
     
     return knn_classifier
+
+def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
+    if not os.path.isfile(X_Ipath) or os.path.spliter(X_Ipath)[1][1] not in ALLOWED_EXTENTIONS:
+        raise Exception("Not a valid image path: {}".format(X_Ipath))
+
+    if knn_classifier is None and model_path is None:
+        raise Exception("You need a knn classifier for either knn_classifier or model_path")
+    
+    if knn_classifier is None:
+        with open(model_path, 'rb') as classifier:
+            knn_classifier = pickle.load(classifier)
+
+    X_image = grab_image(X_Ipath) 
+    X_face_loc = hog(X_image)
+
+    if len(X_face_loc) == 0:
+        return []
+
+    face_encod = face_encoder(X_image, known_faces_locations=X_face_loc)
+
+    closest = knn_classifier.kneighbors(face_encod, n_neighbors=1)
+    matches = [closest[0][i][0] <= distance for i in range(len(X_face_loc))]
+
+    return [(pre, loc) if rec else ("unknown", loc) for pre, loc, rec in zip(knn_classifier.predict(face_encod), X_face_loc, matches)]
+
