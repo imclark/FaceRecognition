@@ -5,6 +5,7 @@ import os
 import os.path
 from sklearn import neighbors
 import pickle 
+import importlib
 
 # train_dir = raw_input("----------- training folder path: ")
 # model_save_path = raw_input("----------- path to save model: ")
@@ -14,10 +15,11 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 face_detector = dlib.get_frontal_face_detector()
 
-68_landmark_predictor = 'raw_input("----------- 68 Point Predictor model path (including .dat): ")'
+# change import path to the path of your models
+68_landmark_predictor = importlib('landmark_predictor.dat', fromlist=[''])
 landmark_predictor = dlib.shape_predictor(68_landmark_predictor)
 
-face_rec = 'raw_input("----------- face Recognition model path (including .dat): ")'
+face_rec = importlib('face_recognition_model_v1.dat')
 face_encoder = dlib.face_recognition_model)v1(face_recognition_model)
 
 
