@@ -10,6 +10,8 @@ import pickle
 # model_save_path = raw_input("----------- path to save model: ")
 # n_neighbors = raw_input("----------- number of neighbors to weight classification: ")
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 face_detector = dlib.get_frontal_face_detector()
 
 68_landmark_predictor = 'raw_input("----------- 68 Point Predictor model path (including .dat): ")'
@@ -109,3 +111,21 @@ def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
 
     return [(pre, loc) if rec else ("unknown", loc) for pre, loc, rec in zip(knn_classifier.predict(face_encod), X_face_loc, matches)]
 
+def show_known_face_name(image_path, predictions):
+   
+    the_image = Image.open(image_path).convert("RGB")
+    draw = ImageDraw.Draw(the_image)
+
+    for name, (top, right, bottom, left) in predictions:
+        
+        draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
+
+        # big 'ol bug so the text needs to be something specific
+        name = name.encoding("UTF-8")
+
+        height, width = draw.textsize(name)
+        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(0,0,255), outline(0,0,255))
+        draw.text((left+6, bottom-height-5), name, fill(255,255,255, 255))
+
+    del draw
+    the_image.show()
