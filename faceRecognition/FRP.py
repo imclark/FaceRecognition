@@ -58,6 +58,22 @@ def face_encodings(face_img, known_faces_locations=None, jitters=1):
     raw_landmarks= raw_face_landmarks(face_image, known_faces_locations)
     return [numpy.array(face_encoder.compute_face_descriptor(face_image, raw_face_landmark_set, jitters)) for landmark_set in raw_face_ladmarks]
 
+def face_landmarks(face_image, face_locations=None):
+    landmarks = raw_face_ladmarks(face_image, face_locations)
+    landmark_tuple = [[(p.x, p.y) for p in point.parts()] for point in landmarks]
+
+    return [{ "chin": points[0:17], "left_eyebrow": points[17:22], "right_eyebrow": points[27:31], "nose_bridge": points[31:36], "left_eye": points[36:42], "right_eye": points[42:48], "top_lip": points[48:55] + [points[64]] + [points[63]] + [points[62]] + [points[61]] + [points[60]], "bottom_lip": points[54:60] + [points[48]] + [points[60]] + [points[67]] + [points[66]] + [points[65]] + [points[64]] } 
+    for points in landmark_tuple]
+
+def distance(face_encodings, face_to_compare):
+    if len(face_encodings) == 0:
+        return numpy.empty(0)
+
+    return numpy.linalg.norm(face_encodings = face_to_compare, axis=1)
+
+def comparison(known_face_encodings, face_to_check, tolerance=0.6):
+    return list(distance(known_face_encodings, face_to_check) <= tolerance)
+
 def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree', verbose=True):
 
     X = []
