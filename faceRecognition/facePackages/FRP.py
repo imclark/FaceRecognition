@@ -6,6 +6,7 @@ import os.path
 from sklearn import neighbors
 import pickle 
 import importlib
+import re
 
 # train_dir = raw_input("----------- training folder path: ")
 # model_save_path = raw_input("----------- path to save model: ")
@@ -33,7 +34,7 @@ def grab_image(image_file, mode='RGB'):
     return numpy.array(im)
 
 def trim_to_bounds(css, image_shape):
-    return max(css[0], 0), min(css[1], image_shape[1]), min(css[2], iamge_shape[0]), max(css[3], 0)
+    return max(css[0], 0), min(css[1], image_shape[1]), min(css[2], image_shape[0]), max(css[3], 0)
 
 def css_to_rect(css):
     return dlib.rectangle(css[3], css[0], css[1], css[2])
@@ -45,20 +46,24 @@ def raw_face_locations(img, num_unsample=1):
     return face_detector(img, num_unsample)
 
 def hog(in_img, unsample=1):
-    return [ trim_to_bounds(rect_to_css(face), in_img.shape) for face in raw_face_locations(img, unsample)]
+    return [ trim_to_bounds(rect_to_css(face), in_img.shape) for face in raw_face_locations(in_img, unsample)]
 
-def raw_face_ladmarks(face_image, face_locations=None):
+def raw_face_landmarks(face_image, face_locations=None):
     if face_locations is None:
         face_locations = raw_face_locations(face_image)
     else:
-        face_locations = [css]
+        face_locations = [css_to_rect(locations) for locations in face_locations]
+
+    predictor = landmark_predictor
+
+    return [predictor(face_image, face_locations) for locations in face_locations]
 
 def face_encodings(face_img, known_faces_locations=None, jitters=1):
-    raw_landmarks= raw_face_landmarks(face_image, known_faces_locations)
-    return [numpy.array(face_encoder.compute_face_descriptor(face_image, raw_face_landmark_set, jitters)) for landmark_set in raw_face_ladmarks]
+    raw_landmarks= raw_face_landmarks(face_img, known_faces_locations)
+    return [numpy.array(face_encoder.compute_face_descriptor(face_img, raw_face_landmark_set, jitters)) for raw_face_landmark_set in raw_landmarks]
 
 def face_landmarks(face_image, face_locations=None):
-    landmarks = raw_face_ladmarks(face_image, face_locations)
+    landmarks = raw_face_landmarks(face_image, face_locations)
     landmark_tuple = [[(p.x, p.y) for p in point.parts()] for point in landmarks]
 
     return [{ "chin": points[0:17], "left_eyebrow": points[17:22], "right_eyebrow": points[27:31], "nose_bridge": points[31:36], "left_eye": points[36:42], "right_eye": points[42:48], "top_lip": points[48:55] + [points[64]] + [points[63]] + [points[62]] + [points[61]] + [points[60]], "bottom_lip": points[54:60] + [points[48]] + [points[60]] + [points[67]] + [points[66]] + [points[65]] + [points[64]] } 
@@ -78,8 +83,8 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
     X = []
     Y = []
 
-    for class_dir in os.listdir(train_dir):
-        for image_path in image_files_in_folder(os.path.join(train_dr, class_dr)):
+    for class_dir in os.listdir(train_dr):
+        for image_path in images_in_folder(os.path.join(train_dr, class_dir)):
             image = grab_image(image_path)
             face_bounding_boxes = hog(image)
 
