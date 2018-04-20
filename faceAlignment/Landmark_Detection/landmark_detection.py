@@ -19,32 +19,44 @@ from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-if len(sys.argv) != 3:
-    print("\n arg -> python [0] program file name [1] landmark predictor [2] image directory")
+# if the argument 
+if len(sys.argv) != 1:
+    print("\n arg -> python [0] ")
     exit()
 
-landmark_path = sys.argv[1]
-images_path = sys.argv[2]
+# grab the landmark model and the image folder path from the user
+landmark_path = raw_input("----------- Please enter the path to the landmark model: ")
+images_path = raw_input("----------- Please enter the path to the images to use: ")
 
+#initialise the face dtector and the landmark predictor 
 detector = dlib.get_frontal_face_detector()
 landmark_predictor = dlib.shape_predictor(landmark_path)
 
+# initialize the display window
 win = dlib.image_window()
 
+# for every image in the file predict the landmarks and overlay them on the image
 for f in glob.glob(os.path.join(images_path, "*.jpg")):
 
+    # read the image in
     img = io.imread(f)
   
+    # set up the window with the image
     win.clear_overlay()
     win.set_image(img)
 
+    # send the image through the detector
     det = detector(img, 1)
 
+    # for every face in the detected faces get the landmarks
     for k, d in enumerate(det):
         
+        # pass the image into the landmark model
         shape = landmark_predictor(img, d)
 
+        # overlay the landmarks onto the image in the window
         win.add_overlay(shape)
-        
+
+    # overlay the bounding box    
     win.add_overlay(det)
 dlib.hit_enter_to_continue()
