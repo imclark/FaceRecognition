@@ -23,13 +23,14 @@ import cv2
 import openface
 
 if len(sys.argv) != 1:
-    print("\n arg -> python [0] program file name [1] image directory")
+    print("\n arg -> python [0] ")
     exit()
 
-# load in lanmark predictor dat
-predictor = raw_input("----------- Predictor model name (including .dat): ")
+# get the predictor model from the user
+predictor = raw_input("----------- Enter the predictor model name (including .dat): ")
 
-filePath = sys.argv[1]
+# get the training folder from the user
+filePath = raw_input("----------- Enter the file directory path: ")
 
 # initialize the face dtector, landmark predictor, and face aligner
 faceDetector = dlib.get_frontal_face_detector()
