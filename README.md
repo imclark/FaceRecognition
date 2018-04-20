@@ -22,6 +22,7 @@ python 2.7 64bit version
         - cmake
         - opencv-python
         - openface 
+        - pillow
 
 -Text editor ( i.e Visual Studio, pycharm )
 
@@ -48,3 +49,5 @@ Created out own training img set for the face recognition part, structure should
 and so on
 
 Should have around 20 images in each subfolder with only the face you want to be known visable.
+Images too large or "awkward format will probably get discarded
+
