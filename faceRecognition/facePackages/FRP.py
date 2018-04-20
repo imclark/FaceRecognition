@@ -56,7 +56,7 @@ def raw_face_landmarks(face_image, face_locations=None):
 
     predictor = landmark_predictor
 
-    return [predictor(face_image, face_locations) for locations in face_locations]
+    return [predictor(face_image, locations) for locations in face_locations]
 
 def face_encodings(face_img, known_faces_locations=None, jitters=1):
     raw_landmarks= raw_face_landmarks(face_img, known_faces_locations)
@@ -151,3 +151,4 @@ def show_known_face_name(image_path, predictions):
 
     del draw
     the_image.show()
+    
