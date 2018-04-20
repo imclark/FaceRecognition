@@ -8,7 +8,7 @@ print("----------- Welcome to the classifier trainer.")
 
 training_images = raw_input("----------- Please enter the path to the training image directory: ")
 
-save_name = raw_input("----------- If you want to save the classifier with a specific name enter one now, else hit enter: ")
+save_name = raw_input("----------- Save the classifier with a specific name with .clf at the end: ")
 
 print("----------- Training the classifier now!")
 

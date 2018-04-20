@@ -100,7 +100,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
         if verbose:
             print("Chose numberd of neighbors myself: ", num_neighbors)
 
-    knn_classifier = neighbors.KNeighborsClassifier(num_neighbors=num_neighbors, algorithm=knn_alg, weights='distance')
+    knn_classifier = neighbors.KNeighborsClassifier(n_neighbors=num_neighbors, algorithm=knn_alg, weights='distance')
     knn_classifier.fit(X,Y)
 
     if model_save_path is not None:
@@ -110,7 +110,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
     return knn_classifier
 
 def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
-    if not os.path.isfile(X_Ipath) or os.path.spliter(X_Ipath)[1][1] not in ALLOWED_EXTENTIONS:
+    if not os.path.isfile(X_Ipath) or os.path.splitext(X_Ipath)[1][1:] not in ALLOWED_EXTENSIONS:
         raise Exception("Not a valid image path: {}".format(X_Ipath))
 
     if knn_classifier is None and model_path is None:
@@ -126,7 +126,7 @@ def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
     if len(X_face_loc) == 0:
         return []
 
-    face_encod = face_encoder(X_image, known_faces_locations=X_face_loc)
+    face_encod = face_encodings(X_image, known_faces_locations=X_face_loc)
 
     closest = knn_classifier.kneighbors(face_encod, n_neighbors=1)
     matches = [closest[0][i][0] <= distance for i in range(len(X_face_loc))]
@@ -143,11 +143,11 @@ def show_known_face_name(image_path, predictions):
         draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
 
         # big 'ol bug so the text needs to be something specific
-        name = name.encoding("UTF-8")
+        name = name.encode("UTF-8")
 
         height, width = draw.textsize(name)
         draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(0,0,255), outline=(0,0,255))
-        draw.text((left+6, bottom-height-5), name, fill(255,255,255, 255))
+        draw.text((left+6, bottom-height-5), name, fill=(255,255,255, 255))
 
     del draw
     the_image.show()
