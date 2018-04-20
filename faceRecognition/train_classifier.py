@@ -6,15 +6,19 @@ import dlib
 
 print("----------- Welcome to the classifier trainer.")
 
+# get training image path from the user
 training_images = raw_input("----------- Please enter the path to the training image directory: ")
 
+# get the name to save the file to
 save_name = raw_input("----------- Save the classifier with a specific name with .clf at the end: ")
 
 print("----------- Training the classifier now!")
 
+# if there is no save name then provide one
 if save_name is None:
     classifier = FRP.train(training_images, model_save_path="trained_classifier.clf", num_neighbors=2)
     print("----------- Your model has been trained: {}".format('trained_classifier.clf'))
+# else use the given name
 else:
     classifier = FRP.train(training_images, model_save_path=save_name, num_neighbors=2)
     print("----------- Your model has been trained: {}".format(save_name))
