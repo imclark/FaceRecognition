@@ -23,4 +23,4 @@ for img in os.listdir(image_path):
     FRP.show_known_face_name(os.path.join(image_path, img), predict)
     dlib.hit_enter_to_continue
 
-print("----------- That's all! FUUUUUUUUUUUUUUUUUUCK YEAH!!!")
+print("----------- End!")
