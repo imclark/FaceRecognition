@@ -16,11 +16,10 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 face_detector = dlib.get_frontal_face_detector()
 
 # change import path to the path of your models
-68_landmark_predictor = importlib('landmark_predictor.dat', fromlist=[''])
-landmark_predictor = dlib.shape_predictor(68_landmark_predictor)
 
-face_rec = importlib('face_recognition_model_v1.dat')
-face_encoder = dlib.face_recognition_model)v1(face_recognition_model)
+landmark_predictor = dlib.shape_predictor('landmark_model.dat')
+
+face_encoder = dlib.face_recognition_model_v1('dlib_face_recognition_resnet_model_v1.dat')
 
 
 
@@ -142,7 +141,7 @@ def show_known_face_name(image_path, predictions):
         name = name.encoding("UTF-8")
 
         height, width = draw.textsize(name)
-        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(0,0,255), outline(0,0,255))
+        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(0,0,255), outline=(0,0,255))
         draw.text((left+6, bottom-height-5), name, fill(255,255,255, 255))
 
     del draw
