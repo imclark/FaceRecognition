@@ -114,7 +114,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
     if num_neighbors is None:
         num_neighbors = int(round(math.sqrt(len(X))))
         if verbose:
-            print("Chose numberd of neighbors myself: ", num_neighbors)
+            print("Chose number of neighbors myself: ", num_neighbors)
 
     # make and train the new classifier
     knn_classifier = neighbors.KNeighborsClassifier(n_neighbors=num_neighbors, algorithm=knn_alg, weights='distance')
