@@ -75,7 +75,7 @@ while True:
 
         # overlay the name and bounding box to the frame
         # set bounding box and color
-        cv2.rectangle(frame, (left, bottom -25), (right, bottom), (255, 0, 255), cv2.FILLED)
+        cv2.rectangle(frame, (left, bottom -25), (right, bottom), (255, 223, 0), cv2.FILLED)
         # set the font type
         font = cv2.FONT_HERSHEY_COMPLEX
         # add the name to the frame

@@ -170,15 +170,15 @@ def show_known_face_name(image_path, predictions):
     for name, (top, right, bottom, left) in predictions:
         
         # draw the bounding box
-        draw.rectangle(((left, top), (right, bottom)), outline=(255, 0, 255))
+        draw.rectangle(((left, top), (right, bottom)), outline=(25, 25, 122))
 
         # big 'ol bug so the text needs to be something specific
         name = name.encode("UTF-8")
 
         # now set the dimenstions for the name to be added to the bounding box
         height, width = draw.textsize(name)
-        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(0,0,255), outline=(0,0,255))
-        draw.text((left+6, bottom-height-5), name, fill=(255,255,255, 255))
+        draw.rectangle(((left, bottom-height-25), (right, bottom)), fill=(25,25,122), outline=(25,25,122))
+        draw.text((left+6, bottom-height-6), name, fill=(255,255,255, 255))
 
     # just cleans up the memory usage a bit
     del draw
