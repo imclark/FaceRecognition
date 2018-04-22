@@ -84,8 +84,8 @@ def distance(face_encodings, face_to_compare):
     return numpy.linalg.norm(face_encodings = face_to_compare, axis=1)
 
 # compares known encodings to the given image and compares their measurements to see if their similar
-def comparison(known_face_encodings, face_to_check, tolerance=0.6):
-    return list(distance(known_face_encodings, face_to_check) <= tolerance)
+def comparison(known_face_encodings, face_to_check, threshold=0.6):
+    return list(distance(known_face_encodings, face_to_check) <= threshold)
 
 # this is the training function that takes in the training images and produces an classifier that "learns" the faces given
 # uses the N_Neighbor method for classification and the ball tree alg
