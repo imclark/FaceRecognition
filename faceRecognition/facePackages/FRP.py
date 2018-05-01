@@ -9,9 +9,6 @@ import importlib
 import re
 import cv2
 
-# The allowed types of images
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
 # get the face detector
 face_detector = dlib.get_frontal_face_detector()
 
@@ -32,7 +29,7 @@ def grab_image(image_file, mode='RGB'):
     return numpy.array(im)
 
 # crops the image done to the detected face box
-def trim_to_bounds(css, image_shape):
+def trim_to_box(css, image_shape):
     return max(css[0], 0), min(css[1], image_shape[1]), min(css[2], image_shape[0]), max(css[3], 0)
 
 # converts a tuple to a dlib rect object and returns the rect object
@@ -50,7 +47,7 @@ def raw_face_locations(img, num_unsample=1):
 
 # returns a detected faces in an image
 def hog(in_img, unsample=1):
-    return [ trim_to_bounds(rect_to_css(face), in_img.shape) for face in raw_face_locations(in_img, unsample)]
+    return [ trim_to_box(rect_to_css(face), in_img.shape) for face in raw_face_locations(in_img, unsample)]
 
 # takes the image and returns the 68 face landmark values from the dlib function
 def raw_face_landmarks(face_image, face_locations=None):
@@ -99,7 +96,7 @@ def save_images(img_name, new_image):
 
 # this is the training function that takes in the training images and produces an classifier that "learns" the faces given
 # uses the N_Neighbor method for classification and the ball tree alg
-def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree', verbose=True):
+def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree'):
 
     X = []
     Y = []
@@ -113,8 +110,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
 
             # if there is no one in the photo then skip it
             if len(face_bounding_boxes) != 1:
-                if verbose:
-                    print("Image {} not sutable for training: {}".format(image_path, "Didn't find a face" if len(face_bounding_boxes) < 1 else "Found more than one face" ))
+                print("Image {} not sutable for training: {}".format(image_path, "Didn't find a face" if len(face_bounding_boxes) < 1 else "Found more than one face" ))
             else:
                 # else pass the encoding info
                 X.append(face_encodings(image, known_faces_locations=face_bounding_boxes)[0])
@@ -123,8 +119,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
     # set the neighbor amount        
     if num_neighbors is None:
         num_neighbors = int(round(math.sqrt(len(X))))
-        if verbose:
-            print("Chose number of neighbors myself: ", num_neighbors)
+        print("Chose number of neighbors myself: ", num_neighbors)
 
     # make and train the new classifier
     knn_classifier = neighbors.KNeighborsClassifier(n_neighbors=num_neighbors, algorithm=knn_alg, weights='distance')
@@ -142,7 +137,7 @@ def train(train_dr, model_save_path=None, num_neighbors=None, knn_alg='ball_tree
 # for an unknown face unknown will be set as the name
 def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
     
-    if not os.path.isfile(X_Ipath) or os.path.splitext(X_Ipath)[1][1:] not in ALLOWED_EXTENSIONS:
+    if not os.path.isfile(X_Ipath) or os.path.splitext(X_Ipath)[1][1:] not in ('png', 'jpg', 'jpeg'):
         raise Exception("Not a valid image path: {}".format(X_Ipath))
 
     if knn_classifier is None and model_path is None:
