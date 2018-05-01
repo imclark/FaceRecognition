@@ -1,3 +1,16 @@
+#################################################################################
+# 
+#   - This program actually takes an image folder and runs the recognition
+#       classifier on them then displays the image with the names overlayed
+#
+#   - You'll be prompted to provide paths to the images folder and classifier
+#
+#   - Image folder doesn't require any stucture to be passed in
+#
+#################################################################################
+
+
+
 import facePackages.FRP as FRP
 import os, os.path, pickle, math
 from sklearn import neighbors
@@ -26,7 +39,8 @@ for img in os.listdir(image_path):
         print("----------- Found {} at ({}, {})".format(name, left, top))
 
     # Show all the face with the names attached
-    FRP.show_known_face_name(os.path.join(image_path, img), predict)
+    FRP.show_known_face_name(file_path, predict)
+    
     dlib.hit_enter_to_continue
 
 print("----------- End!")

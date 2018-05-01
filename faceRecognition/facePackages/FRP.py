@@ -1,12 +1,13 @@
 from PIL import Image, ImageDraw
 import dlib
-import numpy
+import numpy, math
 import os
 import os.path
 from sklearn import neighbors
 import pickle 
 import importlib
 import re
+import cv2
 
 # The allowed types of images
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -86,6 +87,15 @@ def distance(face_encodings, face_to_compare):
 # compares known encodings to the given image and compares their measurements to see if their similar
 def comparison(known_face_encodings, face_to_check, threshold=0.6):
     return list(distance(known_face_encodings, face_to_check) <= threshold)
+
+# creates a directory for knwon faces and saves the knwon faces
+def save_images(img_name, new_image):
+    # create the known faces directory if not already created
+    if not (os.path.exists("known_faces")):
+        os.makedirs("known_faces")
+    
+    # saves the image with a new name in the known faces directory
+    new_image.save('known_faces/Known_{}.jpg'.format(os.path.split(img_name)[1]))
 
 # this is the training function that takes in the training images and produces an classifier that "learns" the faces given
 # uses the N_Neighbor method for classification and the ball tree alg
@@ -180,9 +190,19 @@ def show_known_face_name(image_path, predictions):
         draw.rectangle(((left, bottom-height-25), (right, bottom)), fill=(25,25,122), outline=(25,25,122))
         draw.text((left+6, bottom-height-6), name, fill=(255,255,255, 255))
 
-    # just cleans up the memory usage a bit
-    del draw
-
     # Shows the image with the new boudning box and prediction name
     the_image.show()
+
+    save = raw_input("----------- Do you want to save this image? (y/n): ")
+
+    # while we don't get a proper response ask them again and again
+    while (save.lower() not in ('y', 'n', 'yes', 'no')):
+        save = raw_input("----------- Please enter a valid respose to save this image or not? (y/n): ")
     
+    # if they do want to save the image then save it to the default file
+    if(save.lower() in ('y', 'yes')):
+        print("----------- Saving image {}".format(os.path.split(image_path)[1]))
+        save_images(image_path, the_image)
+    
+    # just cleans up the memory usage a bit
+    del draw
