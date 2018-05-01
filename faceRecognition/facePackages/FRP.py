@@ -16,6 +16,8 @@ face_detector = dlib.get_frontal_face_detector()
 landmark_predictor = dlib.shape_predictor('landmark_model.dat')
 face_encoder = dlib.face_recognition_model_v1('dlib_face_recognition_resnet_model_v1.dat')
 
+accuracy = []
+
 
 # takes in a folder path and goes through it and returns the images in it that match the allowed types of images
 def images_in_folder(folder):
@@ -162,6 +164,13 @@ def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
     closest = knn_classifier.kneighbors(face_encod, n_neighbors=1)
     matches = [closest[0][i][0] <= distance for i in range(len(X_face_loc))]
 
+    # Bring in the accuracy variable
+    global accuracy
+
+    # if there is a match and it's within the threshold, add it to the list
+    if matches and closest[0][0][0] <= distance:
+        accuracy.append([knn_classifier.predict(face_encod), 1-closest[0][0][0]])
+
     return [(pre, loc) if rec else ("unknown", loc) for pre, loc, rec in zip(knn_classifier.predict(face_encod), X_face_loc, matches)]
 
 # Displays the image with the name added to the bounding box
@@ -171,6 +180,9 @@ def show_known_face_name(image_path, predictions):
     the_image = Image.open(image_path).convert("RGB")
     draw = ImageDraw.Draw(the_image)
 
+    # initialize the accuracy variable and creat increment counter
+    global accuracy
+    i = 0
     # for each name predicted
     for name, (top, right, bottom, left) in predictions:
         
@@ -182,8 +194,23 @@ def show_known_face_name(image_path, predictions):
 
         # now set the dimenstions for the name to be added to the bounding box
         height, width = draw.textsize(name)
-        draw.rectangle(((left, bottom-height-25), (right, bottom)), fill=(25,25,122), outline=(25,25,122))
-        draw.text((left+6, bottom-height-6), name, fill=(255,255,255, 255))
+        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(25,25,122), outline=(25,25,122))
+
+        # add the accuracy rating to the name to be displayed
+        # if the list is not null
+        if accuracy:
+            # if the name associated with the accracy is the name being writen now
+            if str(accuracy[i][0][0]) == name:
+                # round the accuracy to the nearest hundrath decimal
+                rounded = round(accuracy[i][1], 2)
+                #then creat a string with a normalized accuracy rating
+                acc = "  Accuracy: " + str(100*rounded) + " %"
+                #add the accuracy string to the name
+                name += acc
+
+        draw.text((left+5, bottom-height-5), name, fill=(255,255,255, 255))
+
+        i += 1
 
     # Shows the image with the new boudning box and prediction name
     the_image.show()
