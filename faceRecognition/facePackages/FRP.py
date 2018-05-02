@@ -170,7 +170,7 @@ def recog(X_Ipath, knn_classifier=None, model_path=None, distance=0.6):
 
     # if there is a match and it's within the threshold, add it to the list
     if matches and closest[0][0][0] <= distance:
-        accuracy.append([knn_classifier.predict(face_encod), 1-closest[0][0][0]])
+        accuracy.append([knn_classifier.predict(face_encod), 1-closest[0]])
 
     return [(pre, loc) if rec else ("unknown", loc) for pre, loc, rec in zip(knn_classifier.predict(face_encod), X_face_loc, matches)]
 
@@ -200,18 +200,23 @@ def show_known_face_name(image_path, predictions):
         # add the accuracy rating to the name to be displayed
         # if the list is not null
         if accuracy:
-            # if the name associated with the accracy is the name being writen now
-            if str(accuracy[i][0][0]) == name:
-                # round the accuracy to the nearest hundrath decimal
-                rounded = round(accuracy[i][1], 4)
-                #then creat a string with a normalized accuracy rating
-                acc = "  Accuracy: " + str(100*rounded) + " %"
-                #add the accuracy string to the name
-                name += acc
+            #initialize the face in image counter
+            y=0
+            # for each name in image
+            for v in accuracy[i][0]:
+                # if the name associated with the accracy is the name being writen now
+                if str(v) == name:
+                    # round the accuracy to the nearest 10^-4 decimal
+                    rounded = round(accuracy[i][1][y], 4)
+                    #then creat a string with a normalized accuracy rating
+                    acc = "  Accuracy: " + str(100*rounded) + " %"
+                    #add the accuracy string to the name
+                    name += acc
+                y+= 1
 
         draw.text((left+5, bottom-height-5), name, fill=(255,255,255, 255))
 
-        i += 1
+    i += 1
 
     # Shows the image with the new boudning box and prediction name
     the_image.show()
