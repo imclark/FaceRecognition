@@ -203,7 +203,7 @@ def show_known_face_name(image_path, predictions):
             # if the name associated with the accracy is the name being writen now
             if str(accuracy[i][0][0]) == name:
                 # round the accuracy to the nearest hundrath decimal
-                rounded = round(accuracy[i][1], 2)
+                rounded = round(accuracy[i][1], 4)
                 #then creat a string with a normalized accuracy rating
                 acc = "  Accuracy: " + str(100*rounded) + " %"
                 #add the accuracy string to the name
