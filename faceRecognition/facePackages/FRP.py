@@ -17,6 +17,7 @@ landmark_predictor = dlib.shape_predictor('landmark_model.dat')
 face_encoder = dlib.face_recognition_model_v1('dlib_face_recognition_resnet_model_v1.dat')
 
 accuracy = []
+i=0
 
 
 # takes in a folder path and goes through it and returns the images in it that match the allowed types of images
@@ -182,7 +183,7 @@ def show_known_face_name(image_path, predictions):
 
     # initialize the accuracy variable and creat increment counter
     global accuracy
-    i = 0
+    global i
     # for each name predicted
     for name, (top, right, bottom, left) in predictions:
         
