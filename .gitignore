@@ -7,3 +7,4 @@
 *.dat
 *.mp4
 *.clf
+dir_to_ignore/Celeb_faces
