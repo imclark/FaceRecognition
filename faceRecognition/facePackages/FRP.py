@@ -195,7 +195,7 @@ def show_known_face_name(image_path, predictions):
 
         # now set the dimenstions for the name to be added to the bounding box
         height, width = draw.textsize(name)
-        draw.rectangle(((left, bottom-height-10), (right, bottom)), fill=(25,25,122), outline=(25,25,122))
+        draw.rectangle(((left, bottom), (right, bottom-35)), fill=(25,25,122), outline=(25,25,122))
 
         # add the accuracy rating to the name to be displayed
         # if the list is not null
@@ -209,12 +209,12 @@ def show_known_face_name(image_path, predictions):
                     # round the accuracy to the nearest 10^-4 decimal
                     rounded = round(accuracy[i][1][y], 4)
                     #then creat a string with a normalized accuracy rating
-                    acc = "  Accuracy: " + str(100*rounded) + " %"
+                    acc = "\nAccuracy: " + str(100*rounded) + " %"
                     #add the accuracy string to the name
                     name += acc
                 y+= 1
 
-        draw.text((left+5, bottom-height-5), name, fill=(255,255,255, 255))
+        draw.text((left+5, bottom-31), name, fill=(255,255,255, 255))
 
     i += 1
 
