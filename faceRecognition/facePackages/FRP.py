@@ -190,6 +190,8 @@ def show_known_face_name(image_path, predictions):
         # draw the bounding box
         draw.rectangle(((left, top), (right, bottom)), outline=(25, 25, 122))
 
+        check = str(name)
+
         # big 'ol bug so the text needs to be something specific
         name = name.encode("UTF-8")
 
@@ -199,7 +201,7 @@ def show_known_face_name(image_path, predictions):
 
         # add the accuracy rating to the name to be displayed
         # if the list is not null
-        if accuracy:
+        if accuracy and check is not "unknown":
             #initialize the face in image counter
             y=0
             # for each name in image
@@ -216,7 +218,7 @@ def show_known_face_name(image_path, predictions):
 
         draw.text((left+5, bottom-31), name, fill=(255,255,255, 255))
 
-    i += 1
+        i += 1
 
     # Shows the image with the new boudning box and prediction name
     the_image.show()
